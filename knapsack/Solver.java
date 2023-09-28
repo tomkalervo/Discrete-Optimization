@@ -82,11 +82,24 @@ public class Solver {
         // }
 
         Optimise opt = new Optimise(true, capacity, items, values, weights);
+        opt.branchAndBound();
         int[] taken = opt.getTaken();
         int value = opt.getValue();
-        
+
+        // check
+        // int v = 0;
+        // for(int i = 0; i < items; i++)
+        //     v += (taken[i] * values[i]);
+
+        // System.out.printf("best value: %d, calculated vale: %d\n", value, v);
+
         // prepare the solution in the specified output format
-        System.out.println(value+" 0");
+
+        if(opt.getOptimal())
+            System.out.println(value+" 1");
+        else
+            System.out.println(value+" 0");
+
         for(int i=0; i < items; i++){
             System.out.print(taken[i]+" ");
         }
