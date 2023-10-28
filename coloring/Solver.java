@@ -74,7 +74,7 @@ public class Solver {
 
         // System.out.println("Start new ColorGraph");
         ColorGraph cg = new ColorGraph(nodes, nodeCount);
-        boolean solved = cg.solver();
+        boolean solved = cg.solve();
         /**
          * Improvments to implement: 
          * Store the sorting order in an array (no need to redo the sorting)
