@@ -72,31 +72,25 @@ public class Solver {
             .addFirst(Integer.parseInt(parts[0]));
         }
 
-        // System.out.println("Start new ColorGraph");
+        // System.out.println("Start new ColorGraph with edgelist:");
+        // Operations.printArrayList(nodes);
         ColorGraph cg = new ColorGraph(nodes, nodeCount);
+        // System.exit(0);
         boolean solved = cg.solve();
-        /**
-         * Improvments to implement: 
-         * Store the sorting order in an array (no need to redo the sorting)
-         * Increase domain (colors) during search
-         * Iterate backwards to make an exhaustive search
-         * Store best result (stop search if solution require more colors than the best)
-         * Add timelimit if needed
-         */
 
         if(solved){
-            System.out.printf("%d %d\n", cg.minColor+1, 1);
+            System.out.printf("%d %d\n", cg.getMaxValue(), 1);
             for (LinkedList<Integer> v : cg.getSolution()) {
                 System.out.printf("%d ", v.getFirst());
             }
             System.out.println("");  
         }
         else{
-            if(cg.getSolution() == null){
+            if(!cg.hasSolution()){
                 System.out.println("No solution found before time out");
                 System.exit(1);
             }
-            System.out.printf("%d %d\n", cg.minColor+1, 0);
+            System.out.printf("%d %d\n", cg.getMaxValue(), 0);
             for (LinkedList<Integer> v : cg.getSolution()) {
                 System.out.printf("%d ", v.getFirst());
             }
