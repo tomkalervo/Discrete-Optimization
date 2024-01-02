@@ -1,3 +1,4 @@
+// Work in progress.
 public class Model {
     private int nrOfWarehouses, nrOfCustomers;
     private int[]      sVector; // fixed cost of set-up
@@ -55,6 +56,20 @@ public class Model {
     }
     /**
      * DECISIONVARIABLES
+     * X_(w,c) and Y_w
+     * X relates customer to warehouse, Y tells if warehouse is open.
+     * 
+     * CONSTRAINTS
+     * a customer c is assigned to exactly one warehouse
+     * sum for w=1,...,n [X_(w,c)]     == 1,           for all c
+     * Total demand of customers assigned to warehouse w do not exceed capacity of warehouse w
+     * sum for c=1,...,m [X_(w,c) * c] <= capacity(w), for all w
+     * 
+     * OBJECTIVE FUN
+     * min: 
+     *       for w=1,...,n sum[ for c=1,...,m sum[X_(w,c)] * setupCost_w ]
+     *       + for w=1,...,n c=1,...,m sum[X_(w,c) * distance(X_(w,c))]
+     * 
      * we have (w * c) x variables and (w) y variables that belong to {0,1}
      * x_w1_c1 x_w1_c2 x_w1_c3 y_w1 bx_11 bx_12 bx_13 by_1
      * x_w2_c1 x_w2_c2 x_w2_c3 y_w2 bx_21 bx_22 bx_23 by_2

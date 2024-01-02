@@ -61,10 +61,11 @@ public class Test {
         // max 7x_1 + 6x_2
         // eq_1 2x_1 + 4x_2 + s_1 = 16
         // eq_2 3x_1 + 2x_2 + s_2 = 12
-        LinkedList<Integer> obj = new LinkedList<>();
-        obj.add(1);
-        obj.add(1);
-        Tableu t = new Tableu(obj);
+        LinkedList<Double> obj = new LinkedList<>();
+        obj.add(1.1);
+        obj.add(1.0);
+        Tableu t = new Tableu();
+        t.setObjectiveFun(obj);
 
         // LinkedList<Integer> eq1 = new LinkedList<>();
         // eq1.add(1);
@@ -87,38 +88,26 @@ public class Test {
         t.addEq(eq4, 4);
         
         t.printAll();
+        System.out.println("------------------");
         int[] pivot = t.getPivotElement();
         t.pivot(pivot[0], pivot[1]);
-        while(!isOptimal(t)){
+        while(!t.isOptimal()){
             t.printAll();
+            System.out.println("------------------");
+
             pivot = t.getPivotElement();
             t.pivot(pivot[0], pivot[1]);
             if(!t.isFeasible())
                 break;
         }
         t.printAll();
+        System.out.println("------------------");
+
         t.printDual();
-        System.out.println(isOptimal(t));
+
         System.out.println(t.getSum());
     } 
-    public static boolean isOptimal(Tableu t){
-        for(int j = 0; j < t.objectiveFun.size(); j++){
-            Value zValue = new Value(0);
-            for(int i = 0; i < t.basisVector.size(); i++){
-                Value tmpValue = new Value(0);
-                tmpValue.add(t.objectiveFun.get(t.basisVector.get(i)));
-                tmpValue.multiply(t.decisionVariables.get(i).get(j));
-                zValue.add(tmpValue);
-            }
-            // System.out.printf("zValue_%d (%d/%d)\n", j, zValue.dividend, zValue.divisor);
-            zValue.multiply(new Value(-1));
-            zValue.add(t.objectiveFun.get(j));
-            // System.out.printf("c_%d - z_%d (%d/%d)\n", j, j, zValue.dividend, zValue.divisor);
-            if(zValue.isPositive())
-                return false;
-        }
-        return true;
-    }
+
     public static void main(String[] args){
         testTableu();
     }

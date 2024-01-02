@@ -1,16 +1,25 @@
+// Todo: continue integrate double values
 public class Value{
+        double constant;
         int dividend;
         int divisor;
+        public Value(double constant){
+            this.constant = constant;
+            this.dividend = 1;
+            this.divisor = 1;
+        }
         public Value(int integer){
+            this.constant = 1;
             this.dividend = integer;
             this.divisor = 1;
         }
         public Value(int dividend, int divisor){
+            this.constant = 1;
             this.dividend = dividend;
             this.divisor = divisor;
         }
         public boolean isInteger(){
-            return divisor == 1;
+            return divisor == 1 && constant == 1;
         }
         public boolean isLessThanOne(){
             return divisor > dividend;
@@ -19,7 +28,7 @@ public class Value{
             return dividend;
         }
         public double getValueDouble(){
-            return (double)dividend/divisor;
+            return ((double)dividend/divisor) * constant;
         }
         public void add(Value a){
             // {1/2} + {3/2} 
@@ -45,6 +54,7 @@ public class Value{
             if(a.dividend == 0){
                 this.dividend = 0;
                 this.divisor = 1;
+                this.constant = 0.0;
                 return;
             }
 

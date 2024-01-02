@@ -1,3 +1,4 @@
+// Todo: Integrate w/ double values from Value. Add choice min or max in optimisation
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -9,14 +10,15 @@ public class Tableu {
     ArrayList<Value> objectiveFun;
     int slackVariable;
 
-    public Tableu(LinkedList<Integer> objectiveFun){
+    public Tableu(){
         this.slackVariable = 0;
         this.objectiveFun = new ArrayList<>();
         this.quantityVector = new ArrayList<>();
         this.basisVector = new ArrayList<>();
         this.decisionVariables = new ArrayList<>();
-
-        for (int constant : objectiveFun) {
+    }
+    public void setObjectiveFun(LinkedList<Double> objectiveFun){
+        for (double constant : objectiveFun) {
             this.objectiveFun.add(new Value(constant));
         }
     }
@@ -170,6 +172,24 @@ public class Tableu {
         }
     }
 
+    public boolean isOptimal(){
+        for(int j = 0; j < objectiveFun.size(); j++){
+            Value zValue = new Value(0);
+            for(int i = 0; i < basisVector.size(); i++){
+                Value tmpValue = new Value(0);
+                tmpValue.add(objectiveFun.get(basisVector.get(i)));
+                tmpValue.multiply(decisionVariables.get(i).get(j));
+                zValue.add(tmpValue);
+            }
+            // System.out.printf("zValue_%d (%d/%d)\n", j, zValue.dividend, zValue.divisor);
+            zValue.multiply(new Value(-1));
+            zValue.add(objectiveFun.get(j));
+            // System.out.printf("c_%d - z_%d (%d/%d)\n", j, j, zValue.dividend, zValue.divisor);
+            if(zValue.isPositive())
+                return false;
+        }
+        return true;
+    }
     public double getSum(){
         double sum = 0;
         for(int j = 0; j < basisVector.size(); j++){
